@@ -1,0 +1,1 @@
+# SK15_team6_miniProject
