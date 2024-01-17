@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<head>
+    <title>개인정보 포함 여부 조회</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='result.css')}}">
+    <!--<link rel="stylesheet" href="result.css">-->
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () {
+            $('#send_file').on('click', function() {
+                const select = $('input[id=inputbox]').val(); 
+                console.log(select);
+                if(select == 'email') {
+                    console.log(select);
+                    $('form').attr('action', "{{url_for('sendMail')}}");
+                }
+                if(select == 'slack') { 
+                    console.log(select);
+                    $('form').attr('action', "{{url_for('sendSlack')}}");
+                }
+            })
+        })        
+  
+    </script>
+</head>
+<body>
+    <h1>
+        <div id="logo">
+            <a><h1>파일 검사결과 조회</h1></a>
+        </div>
+    </h1>
+    <form id="form_submit" method="post">
+        <table>
+            <thead>
+                <tr>
+                    <th>파일 이름</th>
+                    <th>파일 사이즈</th>
+                    <th>파일수정 날짜</th>
+                    <th>이메일 포함 여부</th>
+                    <th>주민등록번호 포함 여부</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{result[0]}}</td>
+                    <td>{{result[1]}}</td>
+                    <td>{{result[2]}}</td>
+                    <td>{% if result[3] %}포함{% else %}미포함{% endif %}</td>
+                    <td>{% if result[4] %}포함{% else %}미포함{% endif %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="wrapper">
+            <label class="select_label">수신처 선택: </label>
+            <input id='inputbox' type='text' placeholder="email/slack" >
+            <button type="submit" class='submit' id="send_file" value="전송" >전송</button>
+        </div>
+    </form>
+    
+</body>
+</html>

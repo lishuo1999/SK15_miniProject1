@@ -1,1 +1,2 @@
-# SK15_team6_miniProject
+# sk15_team6
+sk15_6조

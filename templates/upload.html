@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>파일 업로드 페이지</title>
+    <style>
+        h1 {
+            padding: 10px;
+            background-color: #FFAAAF;
+            color: #FF1493;
+            font-style: italic;
+            text-align: center;
+        }
+        legend {
+            border: 1px solid black;
+            padding: 5px;
+            background-color: darkturquoise;
+            text-align: center;
+        }
+    </style>
+    <script>
+        let fileList = []; // Temporary list to store selected files
+
+        function displayFileNames() {
+            const fileInput = document.getElementById('file');
+            const fileListElement = document.getElementById('file-list');
+            fileListElement.innerHTML = '';
+            for (const file of fileInput.files) {
+                fileList.push({ file, timestamp: getClock() }); // Store selected file and timestamp in the list
+                const listItem = document.createElement('li');
+                listItem.textContent = `${file.name} - ${getClock()}`;
+                fileListElement.appendChild(listItem);
+            }
+        }
+
+        function uploadFiles() {
+            // 여기에서 파일 업로드 기능을 구현
+            // "fileList" 배열을 사용하여 선택한 파일 목록에 접근 가능
+            if (fileList.length === 0) {
+                alert("No files selected for upload.");
+                return;
+            }
+            // Simulate the upload process by displaying the file names and upload dates in the second fieldset
+            const fileListElement = document.getElementById('file-list');
+            fileListElement.innerHTML = '';
+            for (const { file, timestamp } of fileList) {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${file.name} - ${timestamp}`;
+                fileListElement.appendChild(listItem);
+            }
+        }
+
+        function getClock() {
+            const date = new Date();
+            const year = String(date.getFullYear());
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            const hours = String(date.getHours()).padStart(2, "0");
+            const min = String(date.getMinutes()).padStart(2, "0");
+            const sec = String(date.getSeconds()).padStart(2, "0");
+            return `${year}/${month}/${day} ${hours}:${min}:${sec}`;
+        }
+
+    </script>
+</head>
+<body>
+    <h1>
+        <div id="logo">
+            <a><h1>파일 업로드 페이지</h1></a>
+        </div>
+    </h1>
+
+    <main class="content">
+        <form action="/result" method="post" enctype="multipart/form-data">
+            <fieldset style="border: 1px solid black;">
+                <legend>파일 업로드 세션</legend>
+                <input type="file" id="file" name="file[]" onchange="displayFileNames()" multiple><br>
+            </fieldset>
+            <br><br>
+            <fieldset>
+                <legend>업로드 된 파일 목록</legend>
+                <p style="font-family: monospace; font-size: 20px;">업로드 후 파일들 목록</p>
+                <ul id="file-list" class="field-list" style="font-family: serif;"></ul>                
+            </fieldset>   
+            <br><br>
+            <input type="submit" value="Upload" onclick="uploadFiles()">         
+        </form>
+    </main>
+</body>
+</html>
